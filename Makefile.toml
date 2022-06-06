@@ -1,16 +1,22 @@
 [tasks.build_xdp]
 description = "Build XDP program"
-install_crate_args = ["cargo-bpf", "--git", "https://github.com/foniod/redbpf.git"]
+#install_crate_args = ["cargo-bpf", "--git", "https://github.com/foniod/redbpf.git"]
 command = "cargo"
 args = ["bpf", "build", "redirect"]
 
-[tasks.bpf]
-command = "llvm-strip-10"
-args = ["-R", ".text", "target/bpf/programs/redirect/redirect.elf"]
-dependencies = ["build_xdp"]
+#[tasks.bpf]
+#command = "llvm-strip-10"
+#args = ["-R", ".text", "target/bpf/programs/redirect/redirect.elf"]
+#dependencies = ["build_xdp"]
 
 [tasks.release]
 decription = "Build release"
 command = "cargo"
 args = ["build", "--release"]
-dependencies = ["bpf"]
+dependencies = ["build_xdp"]
+
+
+#sudo ./target/release/duo-xdp-rust
+# nc -kul 127.0.0.1 7998
+# nc -kul 127.0.0.1 7999
+# nc -u 127.0.0.1 7999
